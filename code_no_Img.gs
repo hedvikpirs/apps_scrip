@@ -25,7 +25,7 @@ function setData(sheet)
 {
     let start = 2;
     let ar = [ 
-        "Пользователь", "Роль", "Дата вопроса", 
+        "Пользователь", "Роль", "Дата вопроса", "ID комментария", 
         "Вопрос", "Оценка положительная", "Оценка отрицательная",
     ];
     for (let i=0; i < ar.length; i++){
@@ -82,16 +82,21 @@ function getComments(contentText)
     comments = $('.comment-item');
     if(comments.length > 0){
         $(comments).each(function(i,node){
+            cm = 0;
             tmp = {
                 NAME: '',
                 ROLE:'',
                 DATE_COMMENT:'',
+                COMMENT_ID:0,
                 COMMENT:''
             };
             tmp.NAME = $(node).find('.username').text();
             tmp.ROLE = $(node).find('.role').text();
             tmp.DATE_COMMENT = $(node).find('.datetime').text();
-            tmp.COMMENT = $(node).find('.comment-text').text().trim();
+
+            cm = $(node).find('.comment-text');
+            tmp.COMMENT_ID = parseInt($(cm).attr('data-id'));
+            tmp.COMMENT = $(cm).text().trim();
             ar.COMMENTS[i] = tmp; 
         });
     }
@@ -106,6 +111,7 @@ function getMap(sheet, ar)
     save(sheet, row, column++, ar.USER.NAME);
     save(sheet, row, column++, ar.USER.ROLE);
     save(sheet, row, column++, ar.USER.DATE_QUESTION);
+    column++;
     save(sheet, row, column++, ar.USER.QUESTION);
     save(sheet, row, column++, ar.USER.GRADE.GOOD);
     save(sheet, row, column++, ar.USER.GRADE.BAD);
@@ -119,6 +125,8 @@ function getMap(sheet, ar)
             save(sheet, row, column++, ar.LINKED_QUESTIONS[i].NAME);
             save(sheet, row, column++, ar.LINKED_QUESTIONS[i].ROLE);
             save(sheet, row, column++, ar.LINKED_QUESTIONS[i].DATE_QUESTION);
+
+            column++;
             save(sheet, row, column++, ar.LINKED_QUESTIONS[i].QUESTION);
             column = 2;
             row++;
@@ -135,6 +143,7 @@ function getMap(sheet, ar)
             save(sheet, row, column++, ar.COMMENTS[i].NAME);
             save(sheet, row, column++, ar.COMMENTS[i].ROLE);
             save(sheet, row, column++, ar.COMMENTS[i].DATE_COMMENT);
+            save(sheet, row, column++, ar.COMMENTS[i].COMMENT_ID);
             save(sheet, row, column++, ar.COMMENTS[i].COMMENT);
             column = 2;
             row++;
