@@ -7,7 +7,7 @@ function init()
     let url = range.getValues();
 
     setData(sheet);
-    setData(sheet);
+
     
     let response = UrlFetchApp.fetch(url);
     const contentText = response.getContentText();
